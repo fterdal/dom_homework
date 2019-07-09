@@ -17,16 +17,57 @@ function clickCoffee(data) {
  *   SLICE 2
  **************/
 
-function unlockProducers(producers, coffeeCount) {}
+function unlockProducers(producers, coffeeCount) {
+  producers.forEach(producer => {
+    if (coffeeCount >= producer.price / 2) {
+      producer.unlocked = true
+    }
+  })
+}
 
-function getUnlockedProducers(data) {}
+function getUnlockedProducers(data) {
+  return data.producers.filter(producer => producer.unlocked)
+}
 
-function makeDisplayNameFromId(id) {}
+function makeDisplayNameFromId(id) {
+  return id
+    .split('_')
+    .map(word => word[0].toUpperCase() + word.slice(1))
+    .join(' ')
+}
 
+// You shouldn't need to edit this function-- its tests should pass once you've written makeDisplayNameFromId
 // You shoulnd't need to edit this function-- its tests should pass once you've written makeDisplayNameFromId
-function makeProducerDiv(producer) {}
+function makeProducerDiv(producer) {
+  const containerDiv = document.createElement('div')
+  containerDiv.className = 'producer'
+  const displayName = makeDisplayNameFromId(producer.id)
+  const currentCost = producer.price
+  const html = `
+  <div class="producer-column">
+    <div class="producer-title">${displayName}</div>
+    <button type="button" id="buy_${producer.id}">Buy</button>
+  </div>
+  <div class="producer-column">
+    <div>Quantity: ${producer.qty}</div>
+    <div>Coffee/second: ${producer.cps}</div>
+    <div>Cost: ${currentCost} coffee</div>
+  </div>
+  `
+  containerDiv.innerHTML = html
+  return containerDiv
+}
 
-function renderProducers(data) {}
+function renderProducers(data) {
+  const producerContainer = document.getElementById('producer_container')
+  while (producerContainer.firstChild) {
+    producerContainer.removeChild(producerContainer.firstChild)
+  }
+  unlockProducers(data.producers, data.coffee)
+  getUnlockedProducers(data).forEach(producer => {
+    producerContainer.appendChild(makeProducerDiv(producer))
+  })
+}
 
 /**************
  *   SLICE 3

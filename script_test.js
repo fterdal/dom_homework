@@ -100,7 +100,7 @@ describe('Slice 2: Unlocking & Rendering Producers', function() {
       };
     });
 
-    xit("changes `unlocked` to `true` when the player's coffee count is equal to or larger than half the initial price of the producer", function() {
+    it("changes `unlocked` to `true` when the player's coffee count is equal to or larger than half the initial price of the producer", function() {
       data.coffee = 100;
       code.unlockProducers(data.producers, data.coffee);
       expect(data.producers[0].unlocked).to.equal(true);
@@ -108,7 +108,7 @@ describe('Slice 2: Unlocking & Rendering Producers', function() {
       expect(data.producers[2].unlocked).to.equal(false);
     });
 
-    xit('does not set `unlocked` to `false` once a producer has been unlocked, even if the coffee count drops again', function() {
+    it('does not set `unlocked` to `false` once a producer has been unlocked, even if the coffee count drops again', function() {
       data.coffee = 100;
       code.unlockProducers(data.producers, data.coffee);
       data.coffee = 0;
@@ -132,7 +132,7 @@ describe('Slice 2: Unlocking & Rendering Producers', function() {
       };
     });
 
-    xit('returns an array of producer objects', function() {
+    it('returns an array of producer objects', function() {
       const results = code.getUnlockedProducers(data);
       expect(results).to.be.an('array');
       results.forEach(element => {
@@ -143,7 +143,7 @@ describe('Slice 2: Unlocking & Rendering Producers', function() {
       });
     });
 
-    xit('filters out producer objects which are not unlocked', function() {
+    it('filters out producer objects which are not unlocked', function() {
       let results = code.getUnlockedProducers(data);
       expect(results).to.have.lengthOf(1);
 
@@ -153,7 +153,7 @@ describe('Slice 2: Unlocking & Rendering Producers', function() {
       expect(results).to.have.lengthOf(2);
     });
 
-    xit('does not mutate the data', function() {
+    it('does not mutate the data', function() {
       const snapshot = JSON.stringify(data);
       code.getUnlockedProducers(data);
       expect(JSON.stringify(data)).to.equal(snapshot);
@@ -161,12 +161,12 @@ describe('Slice 2: Unlocking & Rendering Producers', function() {
   });
 
   describe('The makeDisplayNameFromId function', function() {
-    xit('returns a string', function() {
+    it('returns a string', function() {
       const result = code.makeDisplayNameFromId('input_string');
       expect(result).to.be.a('string');
     });
 
-    xit('transforms its input string from snake_case to Title Case', function() {
+    it('transforms its input string from snake_case to Title Case', function() {
       const testStrings = [
         'input_string',
         'mr._coffee',
@@ -190,12 +190,12 @@ describe('Slice 2: Unlocking & Rendering Producers', function() {
       qty: 5
     };
 
-    xit('returns a DOM element', function() {
+    it('returns a DOM element', function() {
       const result = code.makeProducerDiv(producer);
       expect(result).to.be.an('HTMLDivElement');
     });
 
-    xit('correctly fills in template string', function() {
+    it('correctly fills in template string', function() {
       // Here, we make a tiny fake DOM local to this test so we can
       // append the element returned by makeProducerdiv to it. Then,
       // we query this tiny DOM to make some assertions about it.
@@ -241,7 +241,7 @@ describe('Slice 2: Unlocking & Rendering Producers', function() {
     });
 
     // We're giving you a big hint, here
-    xit('calls document.getElementById() or document.querySelector()', function() {
+    it('calls document.getElementById() or document.querySelector()', function() {
       const spyOnGetElementById = sinon.spy(document, 'getElementById');
       const spyOnQuerySelector = sinon.spy(document, 'querySelector');
       code.renderProducers(data);
@@ -252,27 +252,27 @@ describe('Slice 2: Unlocking & Rendering Producers', function() {
       spyOnQuerySelector.restore();
     });
 
-    xit('appends some elements to the producer container', function() {
+    it('appends some elements to the producer container', function() {
       code.renderProducers(data);
       const producerContainer = document.getElementById('producer_container');
       assert.isAbove(producerContainer.childNodes.length, 0);
     });
 
     // Hint: call the function written to do this!
-    xit('unlocks any locked producers which need to be unlocked', function() {
+    it('unlocks any locked producers which need to be unlocked', function() {
       code.renderProducers(data);
       expect(data.producers[0].unlocked).to.be.equal(true);
       expect(data.producers[1].unlocked).to.be.equal(true);
       expect(data.producers[2].unlocked).to.be.equal(false);
     });
 
-    xit('only appends unlocked producers', function() {
+    it('only appends unlocked producers', function() {
       code.renderProducers(data);
       const producerContainer = document.getElementById('producer_container');
       expect(producerContainer.childNodes.length).to.be.equal(2);
     });
 
-    xit("deletes the producer container's children before appending new producers", function() {
+    it("deletes the producer container's children before appending new producers", function() {
       const producerContainer = document.getElementById('producer_container');
       const fakeProducer = document.createElement('div');
       producerContainer.appendChild(fakeProducer);
@@ -280,7 +280,7 @@ describe('Slice 2: Unlocking & Rendering Producers', function() {
       expect(producerContainer.childNodes.length).to.be.equal(2);
     });
 
-    xit('is not hardcoded to pass the tests', function() {
+    it('is not hardcoded to pass the tests', function() {
       data.producers.push({ id: 'producer_D', price: 1, unlocked: true });
       const producerContainer = document.getElementById('producer_container');
       code.renderProducers(data);
