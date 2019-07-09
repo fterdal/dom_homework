@@ -73,17 +73,45 @@ function renderProducers(data) {
  *   SLICE 3
  **************/
 
-function getProducerById(data, producerId) {}
+function getProducerById(data, producerId) {
+  return data.producers.find(producer => producer.id === producerId)
+}
 
-function canAffordProducer(data, producerId) {}
+function canAffordProducer(data, producerId) {
+  return data.coffee >= getProducerById(data, producerId).price
+}
 
-function updatePrice(oldPrice) {}
+function updatePrice(oldPrice) {
+  return Math.floor(oldPrice * 1.25)
+}
 
-function updateCPSView(cps) {}
+function updateCPSView(cps) {
+  const cpsIndicator = document.getElementById('cps')
+  cpsIndicator.innerText = cps
+}
 
-function attemptToBuyProducer(data, producerId) {}
+function attemptToBuyProducer(data, producerId) {
+  if (!canAffordProducer(data, producerId)) return false
+  const producer = getProducerById(data, producerId)
+  producer.qty++
+  data.coffee -= producer.price
+  producer.price = updatePrice(producer.price)
+  data.totalCPS += producer.cps
+  return true
+}
 
-function buyButtonClick(event, data) {}
+function buyButtonClick(event, data) {
+  if (event.target.tagName !== 'BUTTON') return
+  const producer = getProducerById(data, event.target.id.replace('buy_', ''))
+  const attempt = attemptToBuyProducer(data, producer.id)
+  if (attempt) {
+    renderProducers(data)
+    updateCoffeeView(data.coffee)
+    updateCPSView(data.totalCPS)
+  } else {
+    window.alert('Not enough coffee!')
+  }
+}
 
 function tick(data) {}
 
