@@ -60,9 +60,7 @@ function makeProducerDiv(producer) {
 
 function renderProducers(data) {
   const producerContainer = document.getElementById('producer_container')
-  while (producerContainer.firstChild) {
-    producerContainer.removeChild(producerContainer.firstChild)
-  }
+  producerContainer.innerHTML = ''
   unlockProducers(data.producers, data.coffee)
   getUnlockedProducers(data).forEach(producer => {
     producerContainer.appendChild(makeProducerDiv(producer))
